@@ -1,0 +1,38 @@
+{
+  "title": "Home Weather \u2014 Starter",
+  "timezone": "browser",
+  "schemaVersion": 38,
+  "version": 1,
+  "panels": [
+    {
+      "type": "stat",
+      "title": "Temperature (now)",
+      "gridPos": {
+        "x": 0,
+        "y": 0,
+        "w": 6,
+        "h": 4
+      },
+      "datasource": "InfluxDB",
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ]
+        }
+      },
+      "targets": [
+        {
+          "query": "from(bucket: \"weather\") |> range(start: -6h) |> filter(fn: (r) => r._measurement == \"weather_realtime\" and r._field == \"temp_c\") |> last()",
+          "refId": "A"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "celsius",
+          "decimals": 1
+        }
+      }
+    }
+  ]
+}
